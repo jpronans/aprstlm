@@ -1,0 +1,25 @@
+00000000001111111111222222222233333333334444444444555555555566666666667777777777
+01234567890123456789012345678901234567890123456789012345678901234567890123456789
++------------------------------------------------------------------------------+
+|  YYYY/MM/DD HH:MM:SS UTC  |                       |  Long nnn.mmW  Lat nn.yyS|
+|  YYYY/MM/DD HH:MM:SS LCL  |                       |PREDICT SERVER UNAVALIABLE|
+|  OOOOO/YYYY HH:MM:SS MET  |                       |  Range nnnnnkm Ecl nn.nn |
++------------------------------------------------------------------------------+
+|                             ANDE TELEMETRY VALUES                            |
+|                                                                              |
+|+X Cur  :     mA S  +X Temp  :nn.nndC S  -X Cur :     mA S  -X Temp: nn.nndC S|
+|+Y Cur  :     mA S  +Y Temp  :nn.nndC S  -Y Cur :     mA S  -Y Temp: nn.nndC S|
+|+Z Cur  :     mA S  +Z Temp  :nn.nndC S  -Z Cur :     mA S  -Z Temp: nn.nndC S|
+|                                                                              |
+|5V Ref A:nn.nn V S  12V BusA:nn.nn V S  5V Ref B:nn.nn V S  12V BusB:nn.nn V S|
+|A1 Curr :     mA S  A2 Curr :     mA S  B1 Curr :     mA S  B2 Curr:      mA S|
+|A1 Temp :     dC S  A2 Temp :     dC S  B1 Temp :     dC S  B2 Temp:      dC S|
+|S-Bat A :        S  TBD TBD :        S  S-Bat B :        S                    |
+|                                                                              |
+|Laser V :     dC S  Laser T :      V S  Voice V :      V S  LB Temp:      dC S|
+|RA Temp :     dC S  ON A    :        S  ON B    :        S  RB Temp:      dC S|
++------------------------------------------------------------------------------+
+| COMMAND-BITS-00 S  COMMAND-BITS-01 S    COMMAND-BITS-02 S  COMMAND-BITS-03 S |
+| COMMAND-BITS-04 S  COMMAND-BITS-05 S    COMMAND-BITS-06 S  COMMAND-BITS-07 S |
+| EXPERIMENT-BIT0 S  EXPERIMENT-BIT1 S    Z-BIT-IF-NEEDED S  BLANK-SPARE-BIT S |
++------------------------------------------------------------------------------+

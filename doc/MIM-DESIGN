@@ -1,0 +1,25 @@
+if mim
+  disable predict
+
+do not permit decode to be called until the setup is complete
+
+mim_setup(packet_type)
+  switch(packettype)
+    MIM_PARM
+       setup paramter names
+       set mim_parm_flag
+    MIM_EQNS
+       setup mim equations
+       set mim_eqns_flag
+    MIM_UNIT
+       setup Units for analog channels
+       setup Labels for binary bits
+       set mim_unit_flag
+    MIM_BITS
+       setup binary defaults ?
+       setup title 
+       set mim_bits_flag
+
+if (mim_parm_flag && mim_eqns_flag && mim_unit_flag && mim_bits_flag)
+   decode
+

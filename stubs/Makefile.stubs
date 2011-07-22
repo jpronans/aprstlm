@@ -1,0 +1,6 @@
+CFLAGS = -O2
+
+SRCS = stubs_setup.c stubs_extra_ncurses.c stubs_extra_display.c stubs_extra_static.c stubs_extra_decode.c stubs_extra_detect.c
+
+all:		$(SRCS)
+		gcc -c $(SRCS)

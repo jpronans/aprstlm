@@ -1,0 +1,30 @@
+0 TIME:     time in seconds from Jan 1, 1970. If satellite             resets, the time is reset to 1 second.
+NEXT:    This is the pointer to the next scheduled command.
+2 CMD:      Number of commands received.
+TELEM:  Telemetry interval in seconds.
+4 MODE:    Sensor mode, 1=raw data or 0=processed.
+TEMP1:   Temperature sensor 1
+6 LIGHT1:   Light sensor 1
+TEMP2:   Temperature sensor 2
+8 LIGHT2:   Light sensor 2
+TEMP3:   Temperature sensor 3
+LIGHT3:   Light sensor 3
+11 TEMP4:   Temperature sensor 4
+LIGHT4:   Light sensor 4
+TEMP5:   Temperature sensor 5
+LIGHT5:   Light sensor 5
+TEMP6:   Temperature sensor 6
+LIGHT6:   Light sensor 6
+VOLT1:    Battery voltage - volts
+VOLT2:    Voltage regulator output - volts
+VOLT3:    Battery current - amperes
+20 GYRO1:    Student MEMS gyro x-axis - units rpm
+GYRO2:    Student MEMS gyro y-axis - units rpm
+GYRO3:    Student MEMS gyro z-axis - units rpm
+23 GTEMP1:  X-axis gyro temperature - units celsius
+GTEMP2:  Y-axis gyro temperature - units celsius
+GTEMP3:  Z-axis gyro temperature - units celsius
+26 Vref:         Voltage reference
+MAG1:       Student magnetometer x-axis - sensor count
+MAG2:       Student magnetometer y-axis - sensor count
+29 MAG3:       Student magnetometer z-axis - sensor count

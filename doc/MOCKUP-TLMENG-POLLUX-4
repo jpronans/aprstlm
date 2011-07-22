@@ -1,0 +1,25 @@
+00000000001111111111222222222233333333334444444444555555555566666666667777777777
+01234567890123456789012345678901234567890123456789012345678901234567890123456789
++------------------------------------------------------------------------------+
+|  YYYY/MM/DD HH:MM:SS UTC  |                       |  Long nnn.mmW  Lat nn.yyS|
+|  YYYY/MM/DD HH:MM:SS LCL  |                       |PREDICT SERVER UNAVALIABLE|
+|  OOOOO/YYYY HH:MM:SS MET  |                       |  Range nnnnnkm Ecl nn.nn |
++------------------------------------------------------------------------------+
+|                           POLLUX TELEMETRY VALUES                            |
+|                                                                              |
+|MAG1    :nnnnnnn S  Gyro1RPM:nn.nn   S  Gyro1 dC: nn.nnC S  Batt V : nn.nn V S|
+|MAG2    :nnnnnnn S  Gyro2RPM:nn.nn   S  Gyro2 dC: nn.nnC S  Batt mA: nn.nnmA S|
+|MAG3    :nnnnnnn S  Gyro3RPM:nn.nn   S  Gyro3 de: nn.nnC S  V Reg  : nn.nn V S|
+|                                                                              |
+|LIGHT1  :nn.nn V S  Temp 1  :nn.nndC S  Light 5 :nn.nn V S  Temp 5  :nn.nndC S|
+|LIGHT2  :      V S  Temp 2  :     dC S  Light 6 :      V S  Temp 6  :     dC S|
+|LIGHT3  :     mA S  Temp 3  :nn.nndC S                   S                   S|
+|LIGHT4  :nn.nndC S  Temp 4  :     dC S  TLM Int :        S  V Ref   :nn.nn V S|
+|                                                                              |
+|                                                                              |
+|                 S                   S                   S                   S|
++------------------------------------------------------------------------------+
+|   UHF-RXA-OFF S  UHF-RXB-OFF S  *GPS-RX-ON* S  RESET-TNC-A S  RESET-TNC-B S  |
+|   CLR-72-HOUR S  *MITEL-GPS* S  **TXA-QRP** S  *TAILLIGHT* S  ISOLATE-BAT S  |
+|   *ISOLATETX* S  *X-CONNECT* S                                               |
++------------------------------------------------------------------------------+

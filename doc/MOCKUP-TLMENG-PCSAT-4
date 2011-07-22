@@ -1,0 +1,25 @@
+00000000001111111111222222222233333333334444444444555555555566666666667777777777
+01234567890123456789012345678901234567890123456789012345678901234567890123456789
++------------------------------------------------------------------------------+
+|  YYYY/MM/DD HH:MM:SS UTC  |                       |  Long nnn.mmW  Lat nn.yyS|
+|  YYYY/MM/DD HH:MM:SS LCL  |                       |PREDICT SERVER UNAVALIABLE|
+|  OOOOO/YYYY HH:MM:SS MET  |                       |  Range nnnnnkm Ecl nn.nn |
++------------------------------------------------------------------------------+
+|                            PCSAT TELEMETRY VALUES                            |
+|                                                                              |
+|+X Cur  :nnnn mA S  +X Temp :nn.nndC S  -X Cur  :     mA S  -X Temp: nn.nndC S|
+|+Y Cur  :     mA S  +Y Temp :nn.nndC S  -Y Cur  :     mA S  -Y Temp: nn.nndC S|
+|+Z Cur  :     mA S  +Z Temp :nn.nndC S  -Z Cur  :     mA S  -Z Temp: nn.nndC S|
+|                                                                              |
+|8V Ref A:nn.nn V S  5V Ref B:nn.nn V S  8V Ref B:nn.nn V S  5V Ref B:nn.nn V S|
+|Bat A-A :      V S  Bat A-B :      V S  Batt B-A:      V S  Bat B-B :      V S|
+|Bat A mA:     mA S  Stk A dC:nn.nndC S  Bat B mA:  nnnmA S  Stk B dC:nn.nndC S|
+|Bat A dC:nn.nndC S                      Bat B dC:nn.nndC S                    |
+|                                                                              |
+|                                                                              |
+|TXA Temp:nn.nndC S  TXA Out : n.nn W S  TXB Temp:nn.nndC S  TXB Out : n.nn W S|
++------------------------------------------------------------------------------+
+|   UHF-RXA-OFF S  UHF-RXB-OFF S  *GPS-RX-ON* S  RESET-TNC-A S  RESET-TNC-B S  |
+|   CLR-72-HOUR S  *MITEL-GPS* S  **TXA-QRP** S  *TAILLIGHT* S  ISOLATE-BAT S  |
+|   *ISOLATETX* S  *X-CONNECT* S                                               |
++------------------------------------------------------------------------------+

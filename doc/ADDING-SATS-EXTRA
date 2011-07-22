@@ -1,0 +1,77 @@
+First, go and read ADDING-SATS. Do it now, and do what it tells you to.
+You cant do this stuff until you do, else you'll SEGV aprstlm!
+
+Second, its very important to understand when the _extra_ functions get
+called. They get called *IMMEDIATLEY* after the function they supplement.
+Remember this, when accessing variables and structures!
+
+Third, its also important to understand what variables/structures/pointers
+are passed in, and in what order. They are the same as their generic
+counterparts. You *may*, if you need to pass in extra structures/pointers
+etc, but be sure to change both the calling statement, and the function
+prototype.
+
+Okay, lets get started. Go look at the pcsat/, pcsat2/ etc versions, to
+get a general idea of how things work.
+
+Locate the switch statement in aprstlm.c for the _extra_ function you
+want to add, and add the appropriate glue code. You can cut and paste,
+then modify as needed. Most of the time, this will be changing the case
+statement, and actually calling your function!
+
+Next, set the appropriate sat->extra<blah> boolean to TRUE in your
+setup function.
+
+Do these steps for each of the extra routines you need. You strictly
+speaking dont have to add the glue code if youre not going to use
+that extra function, but its probably a good idea, just to keep
+things in sync. Your stubs should already exist anyway, to satisfy
+the compiler, and they'll never get called, or evaluated unless you
+define sat->extra<blah> to TRUE anyway.
+
+
+Next you need to actually write the code. Here a are a few hints:
+
+1) Don't modify the core code, except to add the glue needed
+
+2) Respect what the function is supposed to be doing:
+   a) <your_sat>_extra_ncurses should only contain ncurses stuff, and
+      setup. Satellite/device setup goes in <your_sat>_setup.c
+
+   b) <your_sat>_extra_display should only deal with display functionality.
+      It shouldnt deal with static flags, thats <your_sat>_extra_static's
+      job
+
+   c) You should probably have matching code in display and static. If
+      looking at the binary bits, tlmframes 0-3 are the A-Side, frames
+      4-7 B-side, so if you need to check if all the a-side, or all the
+      b side are static, check these frames.
+
+   d) The general static logic should be: Assume static, and then *IF*
+      the appropriate frames have been recieved AND is not static, then
+      clear the static flag. Look at generic_static.c to see how to
+      set and clear static flags.
+
+   e) Display code probably shouldnt be printing strings. Do that in
+      the ncurses extra part (and set it invis), then get display to
+      set it normal, or reverse video, depending on what you want.
+
+3) Remember you can do anything you want. You can trample all over the
+   display or the static flags, or the decoding process. Dont break the
+   core code. Dont duplicate what the core code does.
+
+
+A note for anyone using extra_detect. It is still an int(), *BUT* must
+return frameno unchanged UNLESS you meant to change it. decode needs
+frameno, which is returned from the generic detect. Don't overwrite it.
+
+Pretty much, if you need an extra_detect, then generic detect should
+have returned 99, or maybe 0. Satellites such as ANDE store the frame
+number in the first two of the 8 binary bits, and would get 0 back
+from the generic detect code because they dont have the ,bbbb,b bits on
+the end.
+
+This also means youll need to add extra static and display code to override
+what the generic code does. This should be as simple as setting the
+appropriate locations to A_NORMAL, and TLM_COLOUR_INVIS.
+

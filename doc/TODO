@@ -1,0 +1,49 @@
+For 1.3.x-pre:   (aka 1.3.0)
+
+   o Add extra static code for PCSAT
+
+   o PCSAT: Check +Z Temp
+   o PCSAT: Check Bat A Current
+   o PCSAT: Check Bat B Current
+   o PCSAT: Check +Z Current
+   o PCSAT: Check -Y Current	
+
+   o MIM TODO:
+      + BUG : Once EQNS Packet Received, display doesnt update until
+              next TLM packet RXed.
+      + BUG : Possible display corruption after EQNS change - May be
+              fixable with the Positional Fix below.
+      + BUG : Currently we look for in FROMCALL for the PARM,EQNS,BITS,
+              and UNITs packets. We should be looking at the TOCALL. This
+              won't be fixed until I actually implement a structure for
+              the APRS packet, rather than the current string.
+      + CODE: Positional Fix dependent length of on units, labels, eqns ?
+      + CODE: Extra static handling plus "S" flag fix in extra_display
+
+
+For 1.3.x:
+
+   o RAFT Support
+      Add COMMAND_BITS strings and locations
+      Add detect to tell if PSK-31 is on, and change CH5 to TX Temp
+   o ANDE Support
+      Add COMMAND_BITS strings and locations
+      Add RAW Telemetry Type
+      Fix Static Flags on Clock/TTG/On-Time
+      Move last 3 telemtry lines up ?
+
+For 1.3.x-rrd, or maybe 1.4:
+
+   o RRD Support
+      + compile time support
+      + run time enable (-rrd flag) vs seperate binary ?
+         - daemonize
+         - predict info still usefull ?
+         - still need decode code
+      + code support for:
+         - rrd_create:
+           if !exists for our satellite then
+              create for our satellite
+           fi
+         - rrd_update:
+           assume that we have already created the rrdtool at some point

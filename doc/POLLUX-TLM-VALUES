@@ -1,0 +1,21 @@
+TIME:     time in seconds from Jan 1, 1970. If satellite             resets, the time is reset to 1 second.
+NEXT:    This is the pointer to the next scheduled command.
+CMD:      Number of commands received.
+TELEM:  Telemetry interval in seconds.
+MODE:    Sensor mode, 1=raw data or 0=processed.
+TEMP1:   Temperature sensor 1
+LIGHT1:   Light sensor 1
+TEMP2:   Temperature sensor 2
+LIGHT2:   Light sensor 2
+TEMP3:   Temperature sensor 3
+LIGHT3:   Light sensor 3
+TEMP4:   Temperature sensor 4
+LIGHT4:   Light sensor 4
+TEMP5:   Temperature sensor 5
+LIGHT5:   Light sensor 5
+TEMP6:   Temperature sensor 6
+LIGHT6:   Light sensor 6
+VOLT1:    Not Used
+VOLT2:    Battery voltage - volts
+VOLT3:    Voltage regulator output - volts
+VOLT4:    Battery current - amperes

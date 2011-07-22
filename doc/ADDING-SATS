@@ -1,0 +1,290 @@
+This guide explains how to add extra satellites or devices to aprstlm,
+However, you do need to have a reasonable understanding of C, it does
+NOT teach you C.
+
+1) Create a sub directory for your satellite or device
+2) Populate the directory with the contents of stubs/ :
+
+   Note: cd your_dir ; cp ../stubs/* . will suffice
+
+3) Rename each stub file to the correct name for your
+   satellite (or device). See pcsat/, pcsat2/, mim/
+   for examples
+
+4) Rename the functions inside each file as well! Do not add any
+   code to them yet!
+
+5) Rename and modify Makefile.stub appropriatley. It should
+   just be called Makefile. 
+
+6) Edit the top level Makefile to add your directory to the DIRS
+   line, and also <your_dir>/*.o to the OBJS line. Also create a
+   <your_dir>/*.o target. Look at core/*.o, pcsat/*.o, and pcsat2/*.o
+   for how to do this.
+
+7) Check that everything compiles. DO NOT run the resulting binary,
+   its likely to SEGV, core dump, and lord only knows what else all
+   over the place!
+
+
+Okay, assuming that built successfully, Now the really interesting
+bit starts. For now, we will assume that there is nothing extra
+about your satellite or device, so you'll only need to edit <yoursat>_setup.c
+
+Take a close look at pcsat_setup.c. Read the comments. Most, if not
+all that you need to setup is in here. Lets go thru it bit by bit:
+
+   /* Epoch is used to calculate the Mission Elapsed Time, norad   */
+   /* is used by predict, Set to 0 if you know this device isn't   */
+   /* a satellite, the code will disable the predict server if you */
+   /* requested it */
+
+   sat->epoch=1001817600;
+   sprintf(sat->norad,"%d",26931);
+   sat->statictime=300;
+
+sat->epoch is the number of seconds since 1970 (unix time). sat->norad
+is the NORAD object number, set it to 0 if this isnt a satellite, as
+the comment states. 
+
+sat->statictime is how long before we consider the data in each frame
+as old and static. You dont actually -need- to set this, as the core
+code sets it to 300 seconds (5 minutes) prior to calling your setup
+function, however you may wish to override, and set a different value.
+The next Bit:
+
+   /* Setup what we want the "RAW TELEMETRY VALUES", and "ENGINEERING   */
+   /* TELEMETRY VALUES" to display. Most of the time, the defaults will */
+   /* suffice, but we might want specific labels for small satellites or */
+   /* MIM/OPENTRACKER and friends. [0] is the raw screen, [1] is the */
+   /* engineering screen if it exists */
+
+   strcpy(sat->tlmhdr[0],"RAW TELEMETRY VALUES");
+   strcpy(sat->tlmhdr[1],"ENGINEERING TELEMETRY VALUES");
+
+If your device only has 1 telemetry packet (eg MIM, Opentracker, RAFT),
+you really only need to set tlmhdr[0], but it wouldnt hurt to put a space
+or something in tlmhdr[1]. Now onto the callsigns:
+
+
+ /* Callsigns that the bird uses */
+
+   strcpy(sat->asidecall[0],"W3ADO-1>");
+   strcpy(sat->asidecall[1],"PCSAT-1>");
+   strcpy(sat->bsidecall[0],"PCSAT-11>");
+
+   /* Note we must also tell aprstlm how many calls each side has. */
+   /* This is used for loop control, during the detection code */
+
+   sat->asidecalls=2;
+   sat->bsidecalls=1;
+
+You need to specify each callsign that the satellite/device uses. If
+it has an "A-Side" and "B-Side" ala PCSAT, you'll need to populate
+both sets. Note you also need to set sat->asidecalls and sat->bsidecalls.
+Set sat->bsidecalls to 0 if you dont have a B-Side. Note that while we
+call them callsigns, the code matches from the beginning of the aprs
+packet, so you are advised to add the > character at the end to prevent
+false positives.
+
+   sat->frametypes=7;
+   sat->tlmviews=2;
+   sat->extrabits=TRUE;
+
+   for (i=0; i<=sat->frametypes; i++)
+   {
+      /* We MUST initialise these to zero, else the display code */
+      /* will get very very confused                             */
+
+      tlmframe[i].rxtime.tv_sec=0;
+      tlmframe[i].rxtime.tv_usec=0;
+   }
+
+
+Next we setup a few details about the satellite. sat->frametypes is the
+*TOTAL* number of frames minus 1, both A and B Side. For PCSAT it's 7 (4 Per
+side equals 8, then minus 1). For PCSAT2, it would be 3. For RAFT, MIM etc
+ it will be 0. Yes Zero. If you only have one frame type, set to 0.
+Some of the logic uses this to disable display and decoding etc of
+multiple frame types.
+
+tlmviews will probably always be 1 or 2. 2 is for most birds, that have
+more than one frametype, so we can put the raw telemetry on one screen,
+and decoded values on another. With only 1 frame (frametype=0), then it
+all fits on one screen
+
+sat->extrabits needs to be set to TRUE, *IF* we have the extra binary bits
+after the 8 cmd bits in the telemetry packet. If your telemetry packet is
+just the basic 5 channels, plus 8 binary bits set to FALSE. If your tlm
+packet has the ,bbbb,b after the 8 binary bits, then set to TRUE.
+
+Make sure you include the for loop as is. Without it, the display and
+clocks code is likely to SEGV. This should probably be moved into the
+core or generic part of the code. Next, we setup the telemetry values,
+value types, and locations.
+
+
+   /* Setup The Telemetry Labels. Note they should be 10 Chars long */
+   /* set the valtype to TLM_VAL_TYPE_NONE if you dont want any suffix */
+   /* after the value. If you do this, you probably want to define your */
+   /* own extra display function */
+
+   /* loc[0][n] is the Y position of the label, loc[1][n] is the X */
+   /* position, as per ncurses. The DEFINEs here are just for ease,*/
+   /* the actual value is an int. */
+
+   strcpy(tlmframe[0].lbl[0],"+X Cur  :");
+   tlmframe[0].valtype[0]=TLM_VAL_TYPE_CURR;
+   tlmframe[0].loc[0][0]=2;
+   tlmframe[0].loc[1][0]=1;
+
+   strcpy(tlmframe[0].lbl[1],"+Y Cur  :");
+   tlmframe[0].valtype[1]=TLM_VAL_TYPE_CURR;
+   tlmframe[0].loc[0][1]=3;
+   tlmframe[0].loc[1][1]=TLM_ENG_COL_1;
+
+
+Note the labels are done on a frame per frame basis, and each channel
+in the frame has its own labels. Note channels are numbered 0-4, not
+1-5. 
+
+If you want to use the same columns as PCSAT, PCSAT2, etc, then use
+TLM_ENG_COL_1 etc in the X location. 
+
+
+Next we need to setup the values for the quadratic equations. Take a
+look at this extract:
+
+   /* setup the quadratic equations */
+
+   /* These values get used in the quadratic equation: */
+   /* y=A*(x^3) + B*(x^2) + (C*x) + D */
+   /* Each a, b, c, and d value *MUST* be set. This example */
+   /* just uses for loops because large amounts of the values */
+   /* are zero, or the same value, and its easier just to set */
+   /* the odd ones to zero, then reassign later */
+
+How you set them (induvidually, loops, etc etc) is up to you, but you
+*MUST* setup every value. There is space for 8 frametypes. Use tlmframe[0]
+if frametypes=0
+
+Be carefull, there are actually two possible general quadratic equations:
+
+   y=A*(x^3) + B*(x^2) + (C*x) + D  is the general form when we have multiple
+                                    frame types.
+
+   y=A*(x^2) + (B*x) + C            is the simpler version that RAFT, MIM etc
+                                    use. This can be munged into the more
+                                    general form by setting A to zero, then
+                                    you can use the B, C, and D values of the
+                                    general form as A,B,C.
+
+Note, PCSAT2 used y=A*(x^3) - B*(x^2) + (C*x) + D  for its temp readings! 
+This easily achieved by just using negative values in the appropriate B
+column.
+
+Now we setup the labels for each of the binary command bits. 0-7 are
+for the command bits in the telemetry stream. bits 8-11 are user definable,
+but you will need to add extra code to handle them, Set them blank
+for now, we will get to handling extra bits/code/display/decode etc
+later.
+
+   /* Setup the strings for the command strings */
+   /* 0-7 are bits 0-7 of the 8 command bits */
+   /* 8-11 are user defined */
+
+   strcpy(sat->cmdstring[0]," UHF-A-RX-OFF "); /* reserved for cmd bit 0 */
+   strcpy(sat->cmdstring[1]," UHF-B-RX-OFF "); /* reserved for cmd bit 1 */
+   strcpy(sat->cmdstring[2],"GPS-RX ENABLED"); /* reserved for cmd bit 2 */
+   strcpy(sat->cmdstring[3]," RSET-OPP-TNC "); /* reserved for cmd bit 3 */
+   strcpy(sat->cmdstring[4],"CLEAR-72H-FAIL"); /* reserved for cmd bit 4 */
+   strcpy(sat->cmdstring[5]," MITELGPS/QRP "); /* reserved for cmd bit 5 */
+   strcpy(sat->cmdstring[6],"80LEDTAILLIGHT");/* reserved for cmd bit 6 */
+   strcpy(sat->cmdstring[7],"XCROSS-CONNECT");/* reserved for cmd bit 7 */
+   strcpy(sat->cmdstring[8]," RESET-TNC-A  ");/* set if bit 3 is set on */
+                                               /* B-Side */
+   strcpy(sat->cmdstring[9]," RESET-TNC-B  ");/* set if bit 3 is set on */
+                                               /* A-Side */
+   strcpy(sat->cmdstring[10],"MITEL GPS FMT ");/* set if bit 5 is set on */
+                                               /* B-Side */
+   strcpy(sat->cmdstring[11],"LOW POWER/QRP ");/* set if bit 5 is set on */
+                                               /* A-Side */
+
+Finally, we need to setup the locations of the cmd bits. This code should
+probably be in a generic part of the code, and should just be copied as
+is. Dont forget to add the int i; at the beginning.
+
+   /* setup the positions for each of the command bits. Note that while */
+   /* these are in pcsat_setup(), they are infact generic, and you should */
+   /* duplicate these lines in your own setup function. */
+
+   for (i=0; i<=3; i++)
+   {
+      sat->cmdloc[0][i]=1;
+      sat->cmdloc[1][i]=1+(i*18);
+      sat->cmdloc[0][i+4]=2;
+      sat->cmdloc[1][i+4]=1+(i*18);
+      sat->cmdloc[0][i+8]=3;
+      sat->cmdloc[1][i+8]=1+(i*18);
+   }
+
+Now, finally, we need to tell the core that we dont need any extra code
+to fully support the satellite. Yes, later we might add code to support
+bits that the core code doesnt. Yes, PCSAT does. But dont enable it,
+until you get the generic stuff working. Really, Dont, it will drive
+you insane. Just copy these lines:
+
+   sat->extrancurses=FALSE;
+   sat->extradetect=FALSE;
+   sat->extradecode=FALSE;
+   sat->extradisplay=FALSE;
+   sat->extrastatic=FALSE;
+
+In the case of APRS Satellites, we also need to tell the core that we
+don't want it to skip the generic routines. For BPS 400 type birds, see
+the section in ADDING-SATS-EXTRA. For now, just copy these lines:
+
+   sat->nogendetect=FALSE;
+   sat->nogendecode=FALSE;
+   sat->nogendisplay=FALSE;
+
+Right, thats <your_bird>_setup.c taken care of. Now we need to take care
+of the glue over in the core code, to make things work. First, find the
+section that parses the arguments, and locate this piece of code:
+
+      /* Which Satellite Do We Want To Monitor ? */
+      if (strcmp(argv[argp],"-sat")==0)
+      {
+         argp++;
+         strcpy(sat.label,argv[argp]);
+
+         if (strcmp(sat.label,"PCSAT")==0)
+         {
+            selsat=SAT_PCSAT;
+            pcsat_setup(&sat,&tlmframe);
+         }
+      }
+
+Add appropriate code to identify your sat, set selsat, and call your setup
+routine. Note that you need to pass &sat and &tlmframe into your function.
+Also, add a #define SAT_<YOUR_SAT> x line to aprstlm.h. Consult with
+g7iii@g7iii.net as to avoid clashes, as it is just an int, although it
+shouldn't matter too much if you get a clash and I reassign it later.
+
+Okay, that should be enough for the programme to build and run. Just type
+make in the top level directory. Run it wit ./aprstlm -sat <YOUR_SAT> -mycall
+<blah> -aprs host port....etc etc.
+
+It should fire up, clocks should start running, and if you have two screens
+(Raw and Engineering) then hitting tab should switch between them. If you
+only have one, you will just see a place holder for the raw tlm packet.
+
+Dont panic, this is expected. For the devices, and birds with only one
+frame (frametypes=0), we need to write the extra code that we were talking
+about earlier.
+
+For the two screen satellites, the values will be blank until the appropriate
+telemetry packet is recieved. This is expected.
+
+Now youve done the basics, if your satellite or device needs extra code,
+then go and read ADDING-SATS-EXTRA.
