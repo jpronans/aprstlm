@@ -21,7 +21,7 @@ void pcsat_setup(struct satstruct *sat,struct tlmframestruct *tlmframe)
    /* requested it */
 
    sat->epoch=1001817600;
-   sprintf(sat->norad,"%d",26931);
+   snprintf(sat->norad,6,"%d",26931);
 
    /* Setup what we want the "RAW TELEMETRY VALUES", and "ENGINEERING   */
    /* TELEMETRY VALUES" to display. Most of the time, the defaults will */

@@ -24,7 +24,7 @@ int decode_tlm_pkt(char *tlmpkt, struct satstruct *sat, struct tlmframestruct *t
 
    char timestr[80];
 
-   sscanf(tlmpkt,"%c%d%c%d%c%d%c%d%c%d%c%d%c%s",&discard01,&tlmframe[frameno].framecount,&discard02,&tlmframe[frameno].rawtlm[0],&discard03,&tlmframe[frameno].rawtlm[1],&discard04,&tlmframe[frameno].rawtlm[2],&discard05,&tlmframe[frameno].rawtlm[3],&discard05,&tlmframe[frameno].rawtlm[4],&discard06,&binarybits);
+   sscanf(tlmpkt,"%c%d%c%d%c%d%c%d%c%d%c%d%c%s",&discard01,&tlmframe[frameno].framecount,&discard02,&tlmframe[frameno].rawtlm[0],&discard03,&tlmframe[frameno].rawtlm[1],&discard04,&tlmframe[frameno].rawtlm[2],&discard05,&tlmframe[frameno].rawtlm[3],&discard05,&tlmframe[frameno].rawtlm[4],&discard06,binarybits);
 
    /* Update timestamps */
 

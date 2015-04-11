@@ -10,7 +10,7 @@ aprstlm:	$(OBJS) $(HDRS)
 		for i in $(DIRS); do \
 		(cd $$i; make) ;\
 		done
-		gcc $(CFLAGS) $(LDFLAGS) -o aprstlm $(OBJS)
+		gcc $(CFLAGS) -o aprstlm $(OBJS) $(LDFLAGS)
 
 core/*.o:	core/*.c
 		cd core; make

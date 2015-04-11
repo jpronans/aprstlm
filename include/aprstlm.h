@@ -45,7 +45,7 @@ struct tlmframestruct
 struct satstruct
 {
    char label[10];		/* Satellite Text Name For HDR Win */
-   char norad[5];		/* NORAD Number */
+   char norad[6];		/* NORAD Number */
    time_t epoch;		/* L+0, or Deployment+0 */
 
    char tlmhdr[2][78];		/* "RAW TELEMETRY VALUES" */

@@ -12,6 +12,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <math.h>
+#include <stdlib.h>
 
 #include "../include/aprstlm.h"
 #include "../include/aprstlm-ncurses.h"
@@ -257,7 +258,7 @@ int main(int argc, char **argv)
       strcat(aprsout,mycall);
       strcat(aprsout," PASS -1 vers aprstlm v");
       strcat(aprsout,APRSTLMVER);
-      strcat(aprsout," filter p");
+      strcat(aprsout," filter p/pcsat/w3ado-1");
 
       for (i=0; i<=sat.asidecalls-1; i++)
       {
