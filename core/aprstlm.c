@@ -258,7 +258,7 @@ int main(int argc, char **argv)
       strcat(aprsout,mycall);
       strcat(aprsout," PASS -1 vers aprstlm v");
       strcat(aprsout,APRSTLMVER);
-      strcat(aprsout," filter p/pcsat/w3ado-1");
+      strcat(aprsout," filter p");
 
       for (i=0; i<=sat.asidecalls-1; i++)
       {

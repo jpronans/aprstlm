@@ -289,7 +289,7 @@ int mim_extra_detect(char *aprsbuf ,int aprscount, struct satstruct *sat, struct
                  if (k<5)
                  {
 		 // Changed from if (strcasestr(tmplbl,"deg C") != NULL)
-                    if (!strcasestr(tmplbl,"deg C"))
+                    if ( strcasestr(tmplbl,"deg C") != 0 )
                     {
                        tlmframe[0].valtype[k]=TLM_VAL_TYPE_TEMP;
                     }
